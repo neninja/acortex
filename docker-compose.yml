@@ -1,0 +1,52 @@
+version: "3"
+
+services:
+  app:
+    build: .
+    ports:
+      - "4000:4000"
+    volumes:
+      - ./src:/app
+    environment:
+      POSTGRES_USER: '${DB_USERNAME:-acorte}'
+      POSTGRES_PASSWORD: '${DB_PASSWORD:-acorte}'
+      POSTGRES_HOST: db
+    depends_on:
+      - db
+    networks:
+      - phx
+    extra_hosts:
+      - 'host.docker.internal:host-gateway'
+    tty: true
+  db:
+    image: postgres:10
+    ports:
+      - '${DB_PORT:-5432}:5432'
+    environment:
+      PGPASSWORD: '${DB_PASSWORD:-acorte}'
+      POSTGRES_DB: '${DB_DATABASE:-acorte}'
+      POSTGRES_USER: '${DB_USERNAME:-acorte}'
+      POSTGRES_PASSWORD: '${DB_PASSWORD:-acorte}'
+    volumes:
+      - 'phx-pgsql:/var/lib/postgresql/data'
+    healthcheck:
+      test:
+        - CMD
+        - pg_isready
+        - '-q'
+        - '-d'
+        - '${DB_DATABASE}'
+        - '-U'
+        - '${DB_USERNAME}'
+      retries: 3
+      timeout: 5s
+    networks:
+      - phx
+
+networks:
+  phx:
+    driver: bridge
+
+volumes:
+  phx-pgsql:
+    driver: local
