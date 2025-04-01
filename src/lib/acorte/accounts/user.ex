@@ -158,4 +158,18 @@ defmodule Acorte.Accounts.User do
       add_error(changeset, :current_password, "is not valid")
     end
   end
+
+  def changeset(user, attrs) do
+    user
+    |> cast(attrs, [:email, :password])
+    |> validate_required([:email, :password])
+    |> put_password_hash()
+  end
+
+  defp put_password_hash(changeset) do
+    case get_change(changeset, :password) do
+      nil -> changeset
+      password -> put_change(changeset, :hashed_password, Bcrypt.hash_pwd_salt(password))
+    end
+  end
 end

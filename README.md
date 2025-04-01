@@ -33,8 +33,10 @@ docker-compose exec app mix ecto.migrate
 4. Execute o *seeder*
 
 ```sh
-docker-compose exec app  mix run priv/repo/seeds.exs
+docker-compose exec app mix run priv/repo/seeds.exs
 ```
+
+> Durante o desenvolvimento `mix ecto.fresh` pode ser mais interessante
 
 ### Execução
 
@@ -43,3 +45,8 @@ docker-compose exec app  mix run priv/repo/seeds.exs
 ```sh
 docker-compose exec app mix phx.server
 ```
+
+### Dicas
+
+- `localhost:4000/dev/dashboard`
+- `localhost:4000/dev/mailbox`
