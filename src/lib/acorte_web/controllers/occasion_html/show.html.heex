@@ -1,0 +1,16 @@
+<.header>
+  Occasion {@occasion.id}
+  <:subtitle>This is a occasion record from your database.</:subtitle>
+  <:actions>
+    <.link href={~p"/occasions/#{@occasion}/edit"}>
+      <.button>Edit occasion</.button>
+    </.link>
+  </:actions>
+</.header>
+
+<.list>
+  <:item title="Title">{@occasion.title}</:item>
+  <:item title="Description">{@occasion.description}</:item>
+</.list>
+
+<.back navigate={~p"/occasions"}>Back to occasions</.back>

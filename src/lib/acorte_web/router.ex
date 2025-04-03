@@ -21,6 +21,7 @@ defmodule AcorteWeb.Router do
     pipe_through :browser
 
     get "/", PageController, :home
+    resources "/occasions", OccasionController
   end
 
   # Other scopes may use custom stacks.

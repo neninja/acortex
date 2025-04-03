@@ -1,0 +1,8 @@
+<.header>
+  Edit Occasion {@occasion.id}
+  <:subtitle>Use this form to manage occasion records in your database.</:subtitle>
+</.header>
+
+<.occasion_form changeset={@changeset} action={~p"/occasions/#{@occasion}"} />
+
+<.back navigate={~p"/occasions"}>Back to occasions</.back>
