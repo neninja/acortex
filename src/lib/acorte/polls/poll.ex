@@ -6,7 +6,7 @@ defmodule Acorte.Polls.Poll do
     field :description, :string
     field :title, :string
     belongs_to :occasion, Acorte.Occasions.Occasion
-    has_many :poll_options, Acorte.Polls.PollOption
+    has_many :options, Acorte.Polls.PollOption
 
     timestamps(type: :utc_datetime)
   end

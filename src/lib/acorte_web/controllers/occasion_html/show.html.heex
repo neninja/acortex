@@ -1,16 +1,112 @@
-<.header>
-  Occasion {@occasion.id}
-  <:subtitle>This is a occasion record from your database.</:subtitle>
-  <:actions>
-    <.link href={~p"/occasions/#{@occasion}/edit"}>
-      <.button>Edit occasion</.button>
-    </.link>
-  </:actions>
-</.header>
+<div class="space-y-6">
+  <div
+    class="rounded-lg border bg-card text-card-foreground shadow-sm w-full max-w-4xl mx-auto"
+    data-v0-t="card"
+  >
+    <div class="flex flex-col space-y-1.5 p-6 pb-4">
+      <div class="flex justify-between items-start">
+        <div>
+          <h3 class="font-semibold tracking-tight text-2xl">{@occasion.title}</h3>
+          <p class="text-muted-foreground mt-2 text-base">
+            {@occasion.description}
+          </p>
+        </div>
+        <div class="inline-flex items-center rounded-full border px-2.5 py-0.5 text-xs font-semibold transition-colors focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 border-transparent bg-neutral-low-dark text-neutral-high-light hover:bg-primary/80 uppercase">
+          active
+        </div>
+      </div>
+    </div>
+  </div>
 
-<.list>
-  <:item title="Title">{@occasion.title}</:item>
-  <:item title="Description">{@occasion.description}</:item>
-</.list>
+  <%= for poll <- @occasion.polls do %>
+    <div class="rounded-lg border bg-card text-card-foreground shadow-sm w-full max-w-2xl mx-auto">
+      <div class="sticky top-5 bg-white border-b z-10 flex flex-col space-y-1.5 p-6 mb-4">
+        <h3 class="relative text-2xl font-semibold leading-none tracking-tight">{poll.title}</h3>
+        <p class="text-sm text-muted-foreground">
+          {poll.description}
+        </p>
+      </div>
+
+      <form method="post">
+        <div class="p-6 pt-0">
+          <div class="space-y-4" role="list">
+            <%= for option <- poll.options do %>
+              <div
+                x-data={"#{Jason.encode!(%{
+                selected: option.id in @my_votes,
+                favorite: option.id in @my_favorite_votes,
+                showPopup: false
+              })}"}
+                class="rounded-lg border hover:bg-slate-50 transition-colors flex flex-col [&>div]:p-4"
+                data-selected={option.id in @my_votes}
+                role="listitem"
+              >
+                <div class="flex items-start space-x-3">
+                  <div class="pt-0.5">
+                    <input
+                      id={"poll_#{poll.id}_option_#{option.id}"}
+                      x-model="selected"
+                      @change="if (!selected) favorite = false"
+                      type="checkbox"
+                      name="votes[]"
+                      value={option.id}
+                      class="form-checkbox h-5 w-5 text-blue-600"
+                    />
+                  </div>
+                  <div class="flex-grow">
+                    <label
+                      for={"poll_#{poll.id}_option_#{option.id}"}
+                      class="text-base font-medium leading-none cursor-pointer"
+                    >
+                      {option.title}
+                    </label>
+                    <p class="mt-1.5 text-sm text-muted-foreground">
+                      {option.description}
+                    </p>
+                  </div>
+
+                  <div
+                    class="flex items-center cursor-pointer"
+                    @click="selected = true; favorite = !favorite"
+                    x-bind:class="{'text-yellow-500': favorite, 'text-gray-400': !favorite}"
+                  >
+                    <.icon name="hero-star-solid" />
+                    <input
+                      type="checkbox"
+                      name="favorites[]"
+                      class="hidden"
+                      x-bind:disabled="!selected"
+                      x-model="favorite"
+                      value={option.id}
+                    />
+                  </div>
+                </div>
+                <div>
+                  <div class="flex space-x-2">
+                    <%= for user_name <- Map.get(@other_votes_by_option, option.id, []) do %>
+                      <div
+                        class="flex items-center justify-center w-8 h-8 rounded-full bg-blue-500 text-white text-sm font-bold cursor-help"
+                        title={user_name}
+                      >
+                        {String.first(user_name)}
+                      </div>
+                    <% end %>
+                  </div>
+                </div>
+              </div>
+            <% end %>
+          </div>
+        </div>
+        <div class="flex items-center p-6 pt-0">
+          <input
+            class="w-full bg-neutral-low-dark text-neutral-high-light hover:bg-primary/90 h-10 px-4 py-2 rounded-md text-sm font-medium cursor-pointer"
+            type="submit"
+            value="Submit Votes"
+          />
+        </div>
+      </form>
+    </div>
+  <% end %>
+</div>
 
 <.back navigate={~p"/occasions"}>Back to occasions</.back>

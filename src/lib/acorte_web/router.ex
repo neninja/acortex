@@ -21,7 +21,6 @@ defmodule AcorteWeb.Router do
     pipe_through :browser
 
     get "/", PageController, :home
-    resources "/occasions", OccasionController
   end
 
   # Other scopes may use custom stacks.
@@ -64,6 +63,7 @@ defmodule AcorteWeb.Router do
 
   scope "/", AcorteWeb do
     pipe_through [:browser, :require_authenticated_user]
+    resources "/occasions", OccasionController
 
     live_session :require_authenticated_user,
       on_mount: [{AcorteWeb.UserAuth, :ensure_authenticated}] do

@@ -3,6 +3,7 @@ defmodule Acorte.Accounts.User do
   import Ecto.Changeset
 
   schema "users" do
+    field :name, :string
     field :email, :string
     field :password, :string, virtual: true, redact: true
     field :hashed_password, :string, redact: true
@@ -161,8 +162,8 @@ defmodule Acorte.Accounts.User do
 
   def changeset(user, attrs) do
     user
-    |> cast(attrs, [:email, :password])
-    |> validate_required([:email, :password])
+    |> cast(attrs, [:name, :email, :password])
+    |> validate_required([:name, :email, :password])
     |> put_password_hash()
   end
 

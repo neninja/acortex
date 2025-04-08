@@ -18,10 +18,10 @@ alias Acorte.Polls.PollOption
 alias Acorte.Polls.Vote
 
 users = [
-  %{email: "admin@acorte.com", password: "123"},
-  %{email: "rei@acorte.com", password: "123"},
-  %{email: "neni@acorte.com", password: "123"},
-  %{email: "vitor@acorte.com", password: "123"}
+  %{name: "Admin", email: "admin@acorte.com", password: "123"},
+  %{name: "Rei", email: "rei@acorte.com", password: "123"},
+  %{name: "Neni", email: "neni@acorte.com", password: "123"},
+  %{name: "Vitor", email: "vitor@acorte.com", password: "123"}
 ]
 
 Enum.each(users, fn user ->
@@ -48,6 +48,7 @@ vitor = 4
 # poll para saber pizzas
 %Poll{}
 |> Poll.changeset(%{
+  occasion_id: 1,
   title: "Pizza",
   description: "Qual sabor de pizza você prefere?"
 })

@@ -1,3 +1,13 @@
+:root {
+  --color-background: #ffffff;
+  --color-foreground: #000000;
+}
+
+.dark {
+  --color-background: #0f172a;
+  --color-foreground: #ffffff;
+}
+
 @import "tailwindcss/base";
 @import "tailwindcss/components";
 @import "tailwindcss/utilities";
