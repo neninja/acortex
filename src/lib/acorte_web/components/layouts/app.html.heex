@@ -1,45 +1,77 @@
-<header class="sticky top-0 z-40 bg-white border-b">
-  <nav class="relative flex items-center gap-4 px-4 sm:px-6 lg:px-8 justify-end">
-    <%= if @current_user do %>
-      <navitem class="text-[0.8125rem] leading-6 text-zinc-900">
-        {@current_user.name}
-      </navitem>
-      <navitem>
-        <.link
-          href={~p"/users/settings"}
-          class="text-[0.8125rem] leading-6 text-zinc-900 font-semibold hover:text-zinc-700"
+<header class="sticky top-0 z-50 bg-white border-b">
+  <div class="container mx-auto px-4">
+    <div class="flex items-center justify-end h-12">
+      <div x-data="{ open: false }">
+        <button class="flex rounded-md" x-on:click="open = !open">
+          <span x-show="!open" class="flex">
+            <.icon name="hero-bars-3" class="h-4 w-4" />
+          </span>
+          <span class="sr-only">Toggle menu</span>
+        </button>
+        <div
+          x-show="open"
+          x-transition:enter="transition ease-out duration-200"
+          x-transition:enter-start="opacity-0"
+          x-transition:enter-end="opacity-100"
+          x-transition:leave="transition ease-in duration-150"
+          x-transition:leave-start="opacity-100"
+          x-transition:leave-end="opacity-0"
+          class="fixed inset-0 bg-black/20 z-40"
+          x-on:click="open = false"
+          style="display: none;"
         >
-          <.icon name="hero-cog-6-tooth-micro" />
-        </.link>
-      </navitem>
-      <navitem>
-        <.link
-          href={~p"/users/log_out"}
-          method="delete"
-          class="text-[0.8125rem] leading-6 text-zinc-900 font-semibold hover:text-zinc-700"
+        </div>
+        <div
+          x-show="open"
+          x-transition:enter="transition ease-out duration-200"
+          x-transition:enter-start="translate-x-full"
+          x-transition:enter-end="translate-x-0"
+          x-transition:leave="transition ease-in duration-150"
+          x-transition:leave-start="translate-x-0"
+          x-transition:leave-end="translate-x-full"
+          class="fixed top-0 right-0 bottom-0 w-[250px] bg-white border-l shadow-lg z-50 overflow-y-auto"
+          style="display: none;"
         >
-          <.icon name="hero-arrow-right-start-on-rectangle-micro" />
-        </.link>
-      </navitem>
-    <% else %>
-      <navitem>
-        <.link
-          href={~p"/users/register"}
-          class="text-[0.8125rem] leading-6 text-zinc-900 font-semibold hover:text-zinc-700"
-        >
-          Register
-        </.link>
-      </navitem>
-      <navitem>
-        <.link
-          href={~p"/users/log_in"}
-          class="text-[0.8125rem] leading-6 text-zinc-900 font-semibold hover:text-zinc-700"
-        >
-          Log in
-        </.link>
-      </navitem>
-    <% end %>
-  </nav>
+          <div class="flex flex-col h-full p-4">
+            <div class="flex justify-end">
+              <button class="flex rounded-md" x-on:click="open = false">
+                <.icon name="hero-x-mark-solid" class="h-4 w-4" />
+                <span class="sr-only">Close menu</span>
+              </button>
+            </div>
+            <div class="flex-1 pt-4">
+              <%= if @current_user do %>
+                <nav class="flex flex-col space-y-4">
+                  <a href="/settings" class="flex items-center gap-2" role="navitem"></a>
+                  <navitem>
+                    <.link href={~p"/users/settings"} class="flex items-center gap-2">
+                      <.icon name="hero-user" class="h-4 w-4" />
+                      <span>{@current_user.name}</span>
+                    </.link>
+                  </navitem>
+                  <navitem>
+                    <.link href={~p"/users/log_out"} class="flex items-center gap-2">
+                      <.icon name="hero-arrow-right-start-on-rectangle" class="h-4 w-4" />
+                      <span>Log out</span>
+                    </.link>
+                  </navitem>
+                </nav>
+              <% else %>
+                <nav class="flex flex-col space-y-4">
+                  <navitem>
+                    <.link href={~p"/users/log_in"} class="flex items-center gap-2">
+                      <.icon name="hero-arrow-right-end-on-rectangle" class="h-4 w-4" />
+                      <span>Log in</span>
+                    </.link>
+                  </navitem>
+                </nav>
+              <% end %>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
 </header>
 <main class="container mx-auto py-10 px-4">
   <div class="mx-auto max-w-2xl">

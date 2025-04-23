@@ -20,7 +20,7 @@
 
   <%= for poll <- @occasion.polls do %>
     <div class="rounded-lg border bg-card text-card-foreground shadow-sm w-full max-w-2xl mx-auto">
-      <div class="sticky top-5 bg-white border-b z-10 flex flex-col space-y-1.5 p-6 mb-4">
+      <div class="sticky top-12 bg-white border-b z-10 flex flex-col space-y-1.5 p-6 mb-4">
         <h3 class="relative text-2xl font-semibold leading-none tracking-tight">{poll.title}</h3>
         <p class="text-sm text-muted-foreground">
           {poll.description}
