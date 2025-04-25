@@ -63,7 +63,7 @@ defmodule AcorteWeb.Router do
 
   scope "/", AcorteWeb do
     pipe_through [:browser, :require_authenticated_user]
-    resources "/occasions", OccasionController
+    resources "/events", EventController
 
     live_session :require_authenticated_user,
       on_mount: [{AcorteWeb.UserAuth, :ensure_authenticated}] do

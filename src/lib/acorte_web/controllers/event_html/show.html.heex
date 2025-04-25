@@ -6,9 +6,9 @@
     <div class="flex flex-col space-y-1.5 p-6 pb-4">
       <div class="flex justify-between items-start">
         <div>
-          <h3 class="font-semibold tracking-tight text-2xl">{@occasion.title}</h3>
+          <h3 class="font-semibold tracking-tight text-2xl">{@event.title}</h3>
           <p class="text-muted-foreground mt-2 text-base">
-            {@occasion.description}
+            {@event.description}
           </p>
         </div>
         <div class="inline-flex items-center rounded-full border px-2.5 py-0.5 text-xs font-semibold transition-colors focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 border-transparent bg-neutral-low-dark text-neutral-high-light hover:bg-primary/80 uppercase">
@@ -18,7 +18,7 @@
     </div>
   </div>
 
-  <%= for poll <- @occasion.polls do %>
+  <%= for poll <- @event.polls do %>
     <div class="rounded-lg border bg-card text-card-foreground shadow-sm w-full max-w-2xl mx-auto">
       <div class="sticky top-12 bg-white border-b z-10 flex flex-col space-y-1.5 p-6 mb-4">
         <h3 class="relative text-2xl font-semibold leading-none tracking-tight">{poll.title}</h3>
@@ -109,4 +109,4 @@
   <% end %>
 </div>
 
-<.back navigate={~p"/occasions"}>Back to occasions</.back>
+<.back navigate={~p"/events"}>Back to events</.back>

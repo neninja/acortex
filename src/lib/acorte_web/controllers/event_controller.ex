@@ -1,28 +1,28 @@
-defmodule AcorteWeb.OccasionController do
+defmodule AcorteWeb.EventController do
   use AcorteWeb, :controller
 
-  alias Acorte.Occasions
-  alias Acorte.Occasions.Occasion
+  alias Acorte.Events
+  alias Acorte.Events.Event
 
   # Adicione esta linha
   import Ecto.Query, only: [from: 2]
 
   def index(conn, _params) do
-    occasions = Occasions.list_occasions()
-    render(conn, :index, occasions: occasions)
+    events = Events.list_events()
+    render(conn, :index, events: events)
   end
 
   def new(conn, _params) do
-    changeset = Occasions.change_occasion(%Occasion{})
+    changeset = Events.change_event(%Event{})
     render(conn, :new, changeset: changeset)
   end
 
-  def create(conn, %{"occasion" => occasion_params}) do
-    case Occasions.create_occasion(occasion_params) do
-      {:ok, occasion} ->
+  def create(conn, %{"event" => event_params}) do
+    case Events.create_event(event_params) do
+      {:ok, event} ->
         conn
-        |> put_flash(:info, "Occasion created successfully.")
-        |> redirect(to: ~p"/occasions/#{occasion}")
+        |> put_flash(:info, "Event created successfully.")
+        |> redirect(to: ~p"/events/#{event}")
 
       {:error, %Ecto.Changeset{} = changeset} ->
         render(conn, :new, changeset: changeset)
@@ -30,8 +30,8 @@ defmodule AcorteWeb.OccasionController do
   end
 
   def show(conn, %{"id" => id}) do
-    occasion =
-      Acorte.Repo.get!(Occasion, id)
+    event =
+      Acorte.Repo.get!(Event, id)
       |> Acorte.Repo.preload(polls: [:options])
 
     user_votes =
@@ -60,7 +60,7 @@ defmodule AcorteWeb.OccasionController do
       |> Enum.group_by(& &1.poll_option_id, & &1.user_name)
 
     render(conn, "show.html",
-      occasion: occasion,
+      event: event,
       my_votes: user_votes_ids,
       my_favorite_votes: favorite_votes_ids,
       other_votes_by_option: other_votes_by_option
@@ -68,31 +68,31 @@ defmodule AcorteWeb.OccasionController do
   end
 
   def edit(conn, %{"id" => id}) do
-    occasion = Occasions.get_occasion!(id)
-    changeset = Occasions.change_occasion(occasion)
-    render(conn, :edit, occasion: occasion, changeset: changeset)
+    event = Events.get_event(id)
+    changeset = Events.change_event(event)
+    render(conn, :edit, event: event, changeset: changeset)
   end
 
-  def update(conn, %{"id" => id, "occasion" => occasion_params}) do
-    occasion = Occasions.get_occasion!(id)
+  def update(conn, %{"id" => id, "event" => event_params}) do
+    event = Events.get_event(id)
 
-    case Occasions.update_occasion(occasion, occasion_params) do
-      {:ok, occasion} ->
+    case Events.update_event(event, event_params) do
+      {:ok, event} ->
         conn
-        |> put_flash(:info, "Occasion updated successfully.")
-        |> redirect(to: ~p"/occasions/#{occasion}")
+        |> put_flash(:info, "Event updated successfully.")
+        |> redirect(to: ~p"/events/#{event}")
 
       {:error, %Ecto.Changeset{} = changeset} ->
-        render(conn, :edit, occasion: occasion, changeset: changeset)
+        render(conn, :edit, event: event, changeset: changeset)
     end
   end
 
   def delete(conn, %{"id" => id}) do
-    occasion = Occasions.get_occasion!(id)
-    {:ok, _occasion} = Occasions.delete_occasion(occasion)
+    event = Events.get_event(id)
+    {:ok, _event} = Events.delete_event(event)
 
     conn
-    |> put_flash(:info, "Occasion deleted successfully.")
-    |> redirect(to: ~p"/occasions")
+    |> put_flash(:info, "Event deleted successfully.")
+    |> redirect(to: ~p"/events")
   end
 end

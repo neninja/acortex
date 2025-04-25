@@ -5,11 +5,11 @@ defmodule Acorte.Repo.Migrations.CreatePolls do
     create table(:polls) do
       add :title, :string
       add :description, :string
-      add :occasion_id, references(:occasions, on_delete: :nothing)
+      add :event_id, references(:events, on_delete: :nothing)
 
       timestamps(type: :utc_datetime)
     end
 
-    create index(:polls, [:occasion_id])
+    create index(:polls, [:event_id])
   end
 end

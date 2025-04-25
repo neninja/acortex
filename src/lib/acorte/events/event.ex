@@ -1,8 +1,8 @@
-defmodule Acorte.Occasions.Occasion do
+defmodule Acorte.Events.Event do
   use Ecto.Schema
   import Ecto.Changeset
 
-  schema "occasions" do
+  schema "events" do
     field :description, :string
     field :title, :string
     belongs_to :owner, Acorte.Accounts.User
@@ -12,8 +12,8 @@ defmodule Acorte.Occasions.Occasion do
   end
 
   @doc false
-  def changeset(occasion, attrs) do
-    occasion
+  def changeset(event, attrs) do
+    event
     |> cast(attrs, [:title, :description, :owner_id])
     |> validate_required([:title, :description, :owner_id])
   end

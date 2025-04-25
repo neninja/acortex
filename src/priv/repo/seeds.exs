@@ -12,7 +12,7 @@
 
 alias Acorte.Repo
 alias Acorte.Accounts.User
-alias Acorte.Occasions.Occasion
+alias Acorte.Events.Event
 alias Acorte.Polls.Poll
 alias Acorte.Polls.PollOption
 alias Acorte.Polls.Vote
@@ -37,8 +37,8 @@ vitor = 4
 
 # title Encontro Presencial
 # description primeiro encontro dos envolvidos
-%Occasion{}
-|> Occasion.changeset(%{
+%Event{}
+|> Event.changeset(%{
   title: "Encontro Presencial",
   description: "primeiro encontro dos envolvidos",
   owner_id: 3
@@ -48,7 +48,7 @@ vitor = 4
 # poll para saber pizzas
 %Poll{}
 |> Poll.changeset(%{
-  occasion_id: 1,
+  event_id: 1,
   title: "Pizza",
   description: "Qual sabor de pizza você prefere?"
 })

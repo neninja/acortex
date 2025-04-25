@@ -5,7 +5,7 @@ defmodule Acorte.Polls.Poll do
   schema "polls" do
     field :description, :string
     field :title, :string
-    belongs_to :occasion, Acorte.Occasions.Occasion
+    belongs_to :event, Acorte.Events.Event
     has_many :options, Acorte.Polls.PollOption
 
     timestamps(type: :utc_datetime)
@@ -14,7 +14,7 @@ defmodule Acorte.Polls.Poll do
   @doc false
   def changeset(poll, attrs) do
     poll
-    |> cast(attrs, [:title, :description, :occasion_id])
-    |> validate_required([:title, :description, :occasion_id])
+    |> cast(attrs, [:title, :description, :event_id])
+    |> validate_required([:title, :description, :event_id])
   end
 end

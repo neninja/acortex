@@ -1,13 +1,13 @@
-defmodule AcorteWeb.OccasionHTML do
+defmodule AcorteWeb.EventHTML do
   use AcorteWeb, :html
 
-  embed_templates "occasion_html/*"
+  embed_templates "event_html/*"
 
   @doc """
-  Renders a occasion form.
+  Renders a event form.
   """
   attr :changeset, Ecto.Changeset, required: true
   attr :action, :string, required: true
 
-  def occasion_form(assigns)
+  def event_form(assigns)
 end
