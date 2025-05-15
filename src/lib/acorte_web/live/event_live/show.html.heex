@@ -32,25 +32,20 @@
           <div class="space-y-4" role="list">
             <%= for option <- poll.options do %>
               <div
-                x-data={"#{Jason.encode!(%{
-                selected: option.id in @my_votes,
-                favorite: option.id in @my_favorite_votes,
-                showPopup: false
-              })}"}
+                id={"poll-option-#{option.id}"}
+                data-option-id={option.id}
                 class="rounded-lg border hover:bg-slate-50 transition-colors flex flex-col [&>div]:p-4"
-                data-selected={option.id in @my_votes}
+                data-selected={Enum.any?(@my_votes, &(&1.id == option.id))}
                 role="listitem"
               >
                 <div class="flex items-start space-x-3">
                   <div class="pt-0.5">
                     <input
                       id={"poll_#{poll.id}_option_#{option.id}"}
-                      x-model="selected"
-                      @change="if (!selected) favorite = false"
+                      phx-click="toggle_vote"
+                      phx-value-option_id={option.id}
+                      checked={Enum.any?(@my_votes, &(&1.id == option.id))}
                       type="checkbox"
-                      name="votes[]"
-                      value={option.id}
-                      class="form-checkbox h-5 w-5 text-blue-600"
                     />
                   </div>
                   <div class="flex-grow">
@@ -67,17 +62,25 @@
 
                   <div
                     class="flex items-center cursor-pointer"
-                    @click="selected = true; favorite = !favorite"
-                    x-bind:class="{'text-yellow-500': favorite, 'text-gray-400': !favorite}"
+                    phx-click="toggle_favorite"
+                    phx-value-option_id={option.id}
                   >
-                    <.icon name="hero-star-solid" />
+                    <.icon
+                      name="hero-star-solid"
+                      class={
+                        if Enum.any?(@my_votes, &(&1.id == option.id and &1.is_favorite)) do
+                          "text-yellow-500"
+                        else
+                          "text-gray-400"
+                        end
+                      }
+                    />
                     <input
                       type="checkbox"
                       name="favorites[]"
                       class="hidden"
-                      x-bind:disabled="!selected"
-                      x-model="favorite"
                       value={option.id}
+                      checked={Enum.any?(@my_votes, &(&1.id == option.id and &1.is_favorite))}
                     />
                   </div>
                 </div>
@@ -96,13 +99,6 @@
               </div>
             <% end %>
           </div>
-        </div>
-        <div class="flex items-center p-6 pt-0">
-          <input
-            class="w-full bg-neutral-low-dark text-neutral-high-light hover:bg-primary/90 h-10 px-4 py-2 rounded-md text-sm font-medium cursor-pointer"
-            type="submit"
-            value="Submit Votes"
-          />
         </div>
       </form>
     </div>
