@@ -30,6 +30,10 @@ config :acorte, AcorteWeb.Endpoint,
     tailwind: {Tailwind, :install_and_run, [:acorte, ~w(--watch)]}
   ]
 
+config :live_debugger,
+  ip: {0, 0, 0, 0},  # <- IMPORTANTE para Docker
+  port: 4007
+
 # ## SSL Support
 #
 # In order to use HTTPS in development, a self-signed
