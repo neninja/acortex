@@ -5,14 +5,10 @@ defmodule AcorteWeb.EventLive.Show do
   alias Acorte.Repo
   import Ecto.Query, only: [from: 2]
 
-  defp subscribe(event) do
-    Phoenix.PubSub.subscribe(Acorte.PubSub, "event:#{event.id}")
-  end
-
-  defp broadcast(event, value) do
+  defp broadcast(event, user_id, value) do
     Phoenix.PubSub.broadcast(
       Acorte.PubSub,
-      "event:#{event.id}",
+      "event:#{event.id}:user:#{user_id}",
       value
     )
   end
@@ -55,7 +51,7 @@ defmodule AcorteWeb.EventLive.Show do
       |> Enum.group_by(& &1.poll_option_id, & &1.user_name)
 
     if connected?(socket) do
-      subscribe(event)
+      Phoenix.PubSub.subscribe(Acorte.PubSub, "event:#{event.id}:user:#{current_user.id}")
     end
 
     {:noreply,
@@ -94,7 +90,7 @@ defmodule AcorteWeb.EventLive.Show do
           [%{id: option_id, is_favorite: false} | my_votes]
       end
 
-    broadcast(event, {:vote_updated, current_user.id, updated_votes})
+    broadcast(event, current_user.id, {:vote_updated, current_user.id, updated_votes})
     {:noreply, assign(socket, my_votes: updated_votes)}
   end
 
@@ -114,7 +110,7 @@ defmodule AcorteWeb.EventLive.Show do
         vote -> toggle_favorite(vote, socket)
       end
 
-    broadcast(event, {:vote_updated, current_user.id, updated_votes})
+    broadcast(event, current_user.id, {:vote_updated, current_user.id, updated_votes})
     {:noreply, assign(socket, my_votes: updated_votes)}
   end
 
