@@ -52,6 +52,8 @@ docker-compose exec app mix phx.server
 - `localhost:4007`
 - `localhost:4000/dev/mailbox`
 
+> `docker-compose exec app sh` acessa o container para executar comandos mais facilmente
+
 #### Processo de debug
 
 ```sh
