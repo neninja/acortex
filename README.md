@@ -49,4 +49,12 @@ docker-compose exec app mix phx.server
 ### Dicas
 
 - `localhost:4000/dev/dashboard`
+- `localhost:4007`
 - `localhost:4000/dev/mailbox`
+
+#### Processo de debug
+
+```sh
+variavel |> dbg
+variavel |> dbg(label: "blabla ====")
+```
